@@ -1,0 +1,25 @@
+{
+  "name": "cards-against-pandemic",
+  "version": "0.1.0",
+  "description": "A simple Node app built on Express, instantly up and running.",
+  "author": "nervewax <yo@nervewax.com>",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nervewax/cards-against-pandemic"
+  },
+  "bugs": "https://github.com/nervewax/cards-against-pandemic/issues",
+  "keywords": [
+    "cards against humanity",
+    "socket io"
+  ],
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0",
+    "he": "^1.2.0"
+  },
+  "license": "MIT"
+}

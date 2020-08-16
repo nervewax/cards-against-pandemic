@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cards Against Pandemic</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  <body class="on-login">
+    <div id="app">
+      <div class="view-login">
+        <div class="login">
+          <div class="login-inner">
+            <img class="logo" src="./assets/cah.png" />
+            <label>Cards Against Pandemic</label>
+            <input v-model="username" placeholder="who the hell r u?" />
+            <button
+              id="enter"
+              class="button button--black button--small"
+              v-on:click="enter"
+            >
+              🔥
+            </button>
+          </div>
+          <small class="credit">
+            <a href="https://glitch.com/@nervewax" target="_blank">Glitch</a
+            >&nbsp;&nbsp;//&nbsp;&nbsp;
+            <a href="https://crhallberg.com/cah/" target="_blank">Card Data</a
+            >&nbsp;&nbsp;//&nbsp;&nbsp;
+            <a href="https://nervewax.com" target="_blank">nervewax</a>
+          </small>
+        </div>
+      </div>
+
+      <div class="view-table">
+        <div class="notes">
+          <span>The current player is {{ currentPlayer.name }}</span>
+        </div>
+        <transition-group name="cards" tag="div" class="black-card-area">
+          <div
+            v-for="card in currentBlack"
+            v-bind:key="card.text"
+            class="card card--black"
+          >
+            <span v-html="card.text"></span>
+            <span><small>(Pick {{ card.pick }})</small></span>
+          </div>
+        </transition-group>
+
+        <button
+          id="draw-black"
+          class="button button--black"
+          v-on:click="drawBlack"
+        >
+          Draw Black
+        </button>
+
+        <span>{{ tableLength }}/{{ playersLength - 1 }}</span>
+
+        <transition-group name="cards" tag="ul" class="cards">
+          <li
+            v-for="(cards, index) in table"
+            v-bind:key="cards[0]"
+            class="cards-item"
+          >
+            <div
+              class="card card--white winner"
+              :data-index="index"
+              v-for="cardText in cards"
+              v-bind:key="cardText"
+            >
+              <span v-html="cardText"></span>
+            </div>
+          </li>
+        </transition-group>
+      </div>
+
+      <div class="view-hand">
+        <h4>Player: {{ player.name }}</h4>
+        <div>Score: {{ player.score }}</div>
+        <div>{{ player.hand.length }}/7</div>
+        <button v-on:click="drawWhite" id="draw-white" class="button">
+          Draw White
+        </button>
+
+        <transition-group name="cards" tag="ul" id="hand" class="cards">
+          <li
+            v-for="(card, index) in player.hand"
+            v-bind:key="card"
+            class="cards-item"
+          >
+            <button class="card card--white play-white" :data-index="index">
+              <span v-html="card"></span>
+            </button>
+          </li>
+        </transition-group>
+      </div>
+
+      <div class="view-info">
+        <h4>Scoreboard</h4>
+        <ul class="side-panel__players">
+          <li v-for="player in players" v-bind:key="player.name">
+            <span class="side-panel__player-name">{{ player.name }}</span>
+            <span class="side-panel__player-score">{{ player.score }}</span>
+          </li>
+        </ul>
+
+        <h4>Log</h4>
+        <pre class="log">{{ log }}</pre>
+
+        <h4>Output</h4>
+        <pre>{{ output }}</pre>
+      </div>
+
+      <div class="view-menu">
+        <nav class="navigation">
+          <button
+            id="nav-table"
+            v-on:click="viewTable"
+            class="button button--small"
+          >
+            Table
+          </button>
+          <button
+            id="nav-hand"
+            v-on:click="viewHand"
+            class="button button--small"
+          >
+            Hand
+          </button>
+          <button
+            id="nav-info"
+            v-on:click="viewInfo"
+            class="button button--small"
+          >
+            Info
+          </button>
+        </nav>
+      </div>
+    </div>
+
+    <script src="client.js"></script>
+  </body>
+</html>
